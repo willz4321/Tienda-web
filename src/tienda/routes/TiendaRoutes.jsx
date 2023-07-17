@@ -1,6 +1,7 @@
-import { Link, Navigate, Route, Routes } from "react-router-dom"
+import {  Navigate, Route, Routes } from "react-router-dom"
 import { TiendaPage } from "../pages/TiendaPage"
-import { Abrigos, Accesorios, Camisas, Navbar, Pantalones, Remeras, Tunicas } from "../pages"
+import { Abrigos, Accesorios, Camisas, Navbar, Pantalones, Remeras, Tunicas, Footer } from "../pages"
+
 
 
 export const TiendaRoutes = () => {
@@ -21,6 +22,8 @@ export const TiendaRoutes = () => {
         <Route path="Abrigos" element={ <Abrigos />}/>
         <Route path="accesorios" element={ <Accesorios />}/>
     </Routes>
+
+    <Footer/>
     </>  
   )
 }
