@@ -1,9 +1,19 @@
+import { useDispatch } from "react-redux";
+import { listaProductos } from "../../assets/listaProductos";
+import { setDetailsProduct } from "../../store/slices/Tienda/TiendaSlice";
+import { Link } from "react-router-dom";
+
 
 export const Tunicas = () => {
+  const dispatch = useDispatch();
+
+  const handleVerDetalle = (id) => {
+    const productoSeleccionado = listaProductos.find((producto) => producto.id === id);
+    dispatch(setDetailsProduct(productoSeleccionado));
+  };
   return (
     <>
-    
-    <div className="col-lg-8">
+      <div className="col-lg-8">
         <div className="padding-title">
           <h1 style={{ fontSize: '4rem' }}>
             Tunicas
@@ -13,76 +23,28 @@ export const Tunicas = () => {
 
       <div>
         <ul className="product-list">
-          <li className="product-item">
-            <div className="col">
-              <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-new" />
-              <div>
-                <h4>Producto A</h4>
-                <h5>Precio</h5>
-              </div>
-            </div>
-          </li>
-          <li className="product-item">
-            <div className="col">
-              <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-new" />
-              <div>
-                <h4>Producto B</h4>
-                <h5>Precio</h5>
-              </div>
-            </div>
-          </li>
-          <li className="product-item">
-            <div className="col">
-              <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-new" />
-              <div>
-                <h4>Producto C</h4>
-                <h5>Precio</h5>
-              </div>
-            </div>
-          </li>
-          <li className="product-item">
-          <div className="col">
-          <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-new" />
-          <div>
-            <h4>
-               producto d
-            </h4>
-            <h5>
-               precio
-            </h5>
-          </div>
-        </div>
-          </li>
-          <li className="product-item">
-          <div className="col">
-          <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-new" />
-          <div>
-            <h4>
-               producto e
-            </h4>
-            <h5>
-               precio
-            </h5>
-          </div>
-        </div>
-          </li>
-          <li className="product-item">
-          <div className="col">
-          <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-new" />
-          <div>
-            <h4>
-               producto f
-            </h4>
-            <h5>
-               precio
-            </h5>
-          </div>
-        </div>
-          </li>
+          {listaProductos
+            .filter((producto) => producto.tipo === 'tunicas')
+            .map((producto) => (
+              <li className="product-item mt-2" key={producto.id}>
+                <div className="col d-flex flex-column align-items-start">
+                <Link to={`/producto/${producto.id}`}> {/* Pasar el ID del producto como parámetro de la URL */}
+                    <img
+                      src={producto.imagen}
+                      alt={producto.nombre}
+                      className="img-new"
+                      onClick={() => handleVerDetalle(producto.id)}
+                    />
+                  </Link>
+                  <div >
+                    <h5 className="text-start">{producto.nombre}</h5>
+                    <h6 className="text-start">${producto.precio}</h6>
+                  </div>
+                </div>
+              </li>
+            ))}
         </ul>
-        
       </div>
-    
     </>
-  )
+  );
 }
