@@ -1,5 +1,5 @@
 export * from './carritoLogica'
 export * from './provinciasDatos'
 export * from './CarritoDesplegable'
-export * from './Carrito'
+export * from './CompraFinalizar'
 export * from './ListaCarrito'

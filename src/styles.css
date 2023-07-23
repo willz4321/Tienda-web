@@ -205,3 +205,36 @@
 .carrito-container.active {
   transform: translateX(0%);
 }
+.eliminar-btn {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  fill: #ffffff; /* Color rojo */
+  width: 16px; /* Ancho del ícono */
+  height: 16px; /* Altura del ícono */
+  transition: all 0.3s ease; /* Agregamos una transición suave para hacerlo más agradable */
+}
+
+.eliminar-btn:hover {
+  fill: #ca0707; /* Color rojo al pasar el mouse */
+  transform: scale(1.5); /* Aumentar el tamaño al pasar el mouse */
+}
+.carrito-vacio {
+  color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  margin: 0; 
+}
+.lista-carrito-derecha{
+  display: flex; 
+  flex-direction: row;
+  justify-content: center;
+   align-items: flex-end; 
+   gap: 10px;
+   position: absolute; 
+   bottom: 20px; 
+   right: 20px; 
+}

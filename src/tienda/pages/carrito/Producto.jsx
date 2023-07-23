@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate , useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { setItemBuys } from '../../../store/slices/Tienda/TiendaSlice';
+import { CarritoDesplegable } from './CarritoDesplegable';
 
 export const Producto = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
   const productos = useSelector((state) => state.Tienda.productos);
   const [cantidad, setCantidad] = useState(1);
   const [talle, setTalle] = useState('');
+  const [showCarrito, setShowCarrito] = useState(false);
 
   const handleCantidadChange = (action) => {
     if (action === 'incrementar') {
@@ -22,6 +23,10 @@ export const Producto = () => {
   // Buscar el producto con el ID correspondiente en el estado de Redux
   const productoSeleccionado = productos.find((producto) => producto.id === parseInt(id));
 
+  const handleCarritoToggle = () => {
+    setShowCarrito((prevState) => !prevState);
+  };
+
   const handleAgregarAlCarrito = () => {
     const productoParaCarrito = { 
       id : productoSeleccionado.id,
@@ -33,10 +38,12 @@ export const Producto = () => {
      }
       
     dispatch(setItemBuys(productoParaCarrito));
-    navigate('/listaCompra');
+    handleCarritoToggle();
   };
 
+
   return (
+    <>
     <div className="container">
       <div className="row">
         <div className="col-md-6">
@@ -111,5 +118,29 @@ export const Producto = () => {
         </div>
       </div>
     </div>
+      {/* Menú desplegable del carrito */}
+      {showCarrito && (
+        <div className={`carrito-container ${showCarrito ? "active" : ""}`} onClick={handleCarritoToggle}>
+          <div className="carrito-overlay" >
+            <CarritoDesplegable />
+            <div className="lista-carrito-derecha">
+            {productos.length > 0 && ( // Only render if there are products in the cart
+                <>
+                  {/* Botón "Ver Carrito" */}
+                  <Link to="/listaCompra" className="btn btn-primary" onClick={handleCarritoToggle}>
+                    Ver Carrito
+                  </Link>
+                  {/* Botón "Finalizar Compra" */}
+                  <Link to="/carrito" className="btn btn-success" onClick={handleCarritoToggle}>
+                    Finalizar Compra
+                  </Link>
+                </>
+              )}
+             </div>
+             {productos.length <= 0 && <h3 className='carrito-vacio'>El carrito está vacío</h3>}
+          </div>   
+        </div>
+      )}
+    </>  
   );
 };
