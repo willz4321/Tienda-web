@@ -9,6 +9,7 @@ export const Producto = () => {
   const { id } = useParams();
   const productos = useSelector((state) => state.Tienda.productos);
   const [cantidad, setCantidad] = useState(1);
+  const [talle, setTalle] = useState('');
 
   const handleCantidadChange = (action) => {
     if (action === 'incrementar') {
@@ -17,16 +18,18 @@ export const Producto = () => {
       setCantidad((prevCantidad) => prevCantidad - 1);
     }
   };
+  
   // Buscar el producto con el ID correspondiente en el estado de Redux
   const productoSeleccionado = productos.find((producto) => producto.id === parseInt(id));
 
   const handleAgregarAlCarrito = () => {
     const productoParaCarrito = { 
+      id : productoSeleccionado.id,
       nombre : productoSeleccionado.nombre,
       precio :  productoSeleccionado.precio,
       imagen :  productoSeleccionado.imagen,
-      cantidad // Agrega la cantidad si también la necesitas en el carrito
-   
+      cantidad, // Agrega la cantidad si también la necesitas en el carrito
+      talle
      }
       
     dispatch(setItemBuys(productoParaCarrito));
@@ -48,12 +51,26 @@ export const Producto = () => {
               <li key={index}>{item}</li>
             ))}
           </ul>
-          <h4>Talles disponibles:</h4>
+          <h4>Talle: {talle}</h4>
           <ul>
-            {productoSeleccionado.talle.map((talle, index) => (
-              <li key={index}>{talle}</li>
-            ))}
-          </ul>
+              {productoSeleccionado.talle.map((talleP, index) => (
+                <div key={index} className="btn-group" role="group" aria-label="Basic radio toggle button group" style={{ marginLeft: '15px' }}>
+                  <input
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id={`btnradio${index + 1}`}
+                    autoComplete="off"
+                    checked={talle === talleP}
+                    onChange={() => setTalle(talleP)}
+                  />
+                  <label className={`btn btn-outline-primary ${talle === talleP ? 'active' : ''}`} htmlFor={`btnradio${index + 1}`}>
+                    {talleP}
+                  </label>
+                </div>
+              ))}
+            </ul>
+
 
           <div className="d-flex align-items-center">
             <div className="quantity d-flex align-items-center">
@@ -87,7 +104,7 @@ export const Producto = () => {
             </div>
 
             <div className='p-4'>
-            <button className="btn btn-success" onClick={handleAgregarAlCarrito}>Añadir al carrito</button>
+            <button className="btn btn-success" onClick={handleAgregarAlCarrito} disabled={!talle}>Añadir al carrito</button>
             </div>
             
           </div>

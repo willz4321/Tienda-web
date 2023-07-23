@@ -1,5 +1,5 @@
-import { useFormLogic } from "./carrito/carritoLogica";
-import { provinciasArgentina } from "./carrito/provinciasDatos";
+import { useFormLogic } from "./carritoLogica";
+import { provinciasArgentina } from "./provinciasDatos";
 
 export const CarritoCompra = () => {
 

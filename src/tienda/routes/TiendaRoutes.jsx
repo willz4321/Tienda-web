@@ -16,14 +16,13 @@ export const TiendaRoutes = () => {
         <Route path="/" element={ <TiendaPage/> } />
         
         <Route path="/*" element={ <Navigate to="/" /> } />
-
+        <Route path="carrito" element={ <CarritoCompra /> } />
         <Route path="pantalones" element={ <Pantalones /> } />
         <Route path="remeras" element={ <Remeras />}/>
         <Route path="tunicas" element={ <Tunicas />}/>
         <Route path="camisas" element={ <Camisas />}/>
         <Route path="Abrigos" element={ <Abrigos />}/>
         <Route path="accesorios" element={ <Accesorios />}/>
-        <Route path="carrito" element={ <CarritoCompra />}/>
         <Route path="producto/:id" element={<Producto />} />
         <Route path="listaCompra" element={<ListaCarrito />} />
     </Routes>

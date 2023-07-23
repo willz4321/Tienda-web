@@ -132,6 +132,10 @@
      width: 560px;
      height: 600px;
   }
+  .img-listBuys{
+    width: 100px;
+    height: 150px;
+  }
 /* Estilos CSS para el componente Pantalones */
 .product-list {
     display: flex;
@@ -172,4 +176,32 @@
   .padding-title {
     text-align: center; /* Centra el texto horizontalmente dentro del div */
   }
-  
+  /* Estilos para el contenedor principal de ListaCarrito */
+.carrito-overlay {
+  width: 30%;
+  height: 100%;
+  padding: 20px;
+  background-color:#323232;
+  z-index: 10000; 
+}
+
+/* Estilos para el contenido de ListaCarrito */
+.carrito-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: flex-end; /* Cambiar "end" por "flex-end" */
+  align-items: center;
+  transform: translateX(100%); /* Estado inicial fuera de la pantalla */
+  transition: transform 0.5s ease;
+}
+
+/* Aplicar transformación cuando está visible */
+.carrito-container.active {
+  transform: translateX(0%);
+}

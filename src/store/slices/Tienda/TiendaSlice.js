@@ -19,8 +19,13 @@ reducers: {
         state.productos = [payload]
      },
      setItemBuys: (state, action) => {
-
-      state.listaProductos.push(action.payload);
+      const { id, cantidad } = action.payload;
+      const existingProduct = state.listaProductos.find((producto) => producto.id === id);
+      if (existingProduct) {
+        existingProduct.cantidad += cantidad;
+      } else {
+        state.listaProductos.push(action.payload);
+      }
     },
   }
 });
