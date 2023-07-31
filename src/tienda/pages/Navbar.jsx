@@ -1,15 +1,21 @@
 import { Link } from "react-router-dom"
 import { CarritoDesplegable} from "./carrito";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { tipoProductoSelect } from "../../store/slices/Tienda/TiendaSlice";
 
 
 export const Navbar = () => {
-    const productos = useSelector((state) => state.Tienda.productos);
+ 
+    const productosLista = useSelector((state) => state.Tienda.clienteCompra.listaProductos);
     const [showCarrito, setShowCarrito] = useState(false);
-
-  const handleCarritoToggle = () => {
+    const handleCarritoToggle = () => {
     setShowCarrito((prevState) => !prevState);
+  };
+  const dispatch = useDispatch();
+
+  const handleTipoProductoSelect = (tipo) => {
+    dispatch(tipoProductoSelect(tipo));
   };
 
   return (
@@ -26,19 +32,19 @@ export const Navbar = () => {
             </Link>
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                    <Link to="/pantalones" className="nav-link active text-navbar">PANTALONES</Link>
+                    <Link to="/list" className="nav-link active text-navbar" onClick={() => handleTipoProductoSelect('pantalones')}>PANTALONES</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/remeras" className="nav-link active text-navbar">REMERAS</Link>
+                    <Link to="/list" className="nav-link active text-navbar" onClick={() => handleTipoProductoSelect('remeras')}>REMERAS</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/tunicas" className="nav-link active text-navbar">TÚNICAS</Link>
+                    <Link to="/list" className="nav-link active text-navbar" onClick={() => handleTipoProductoSelect('tunicas')}>TÚNICAS</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/camisas" className="nav-link active text-navbar">CAMISAS</Link>
+                    <Link to="/list" className="nav-link active text-navbar" onClick={() => handleTipoProductoSelect('camisas')}>CAMISAS</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/abrigos" className="nav-link active text-navbar">ABRIGOS</Link>
+                    <Link to="/list" className="nav-link active text-navbar" onClick={() => handleTipoProductoSelect('abrigos')}>ABRIGOS</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/accesorios" className="nav-link active text-navbar">ACCESORIOS</Link>
@@ -58,26 +64,26 @@ export const Navbar = () => {
             </div>
         </div>
         </nav>
-          {/* Menú desplegable del carrito */}
-      {showCarrito && (
+       {/* Menú desplegable del carrito */}
+       {showCarrito && (
         <div className={`carrito-container ${showCarrito ? "active" : ""}`} onClick={handleCarritoToggle}>
           <div className="carrito-overlay" >
             <CarritoDesplegable />
-            <div className="lista-carrito-derecha">
-            {productos.length > 0 && ( // Only render if there are products in the cart
+            <div className="lista-carrito-derecha pt-5">
+            {productosLista.length > 0 && ( // Only render if there are products in the cart
                 <>
                   {/* Botón "Ver Carrito" */}
-                  <Link to="/listaCompra" className="btn btn-primary" onClick={handleCarritoToggle}>
+                  <Link to="/listaCompra" className="btn btn btn-outline-light" onClick={handleCarritoToggle}>
                     Ver Carrito
                   </Link>
                   {/* Botón "Finalizar Compra" */}
-                  <Link to="/carrito" className="btn btn-success" onClick={handleCarritoToggle}>
+                  <Link to="/carrito" className="btn btn-outline-info" onClick={handleCarritoToggle}>
                     Finalizar Compra
                   </Link>
                 </>
               )}
              </div>
-             {productos.length <= 0 && <h3 className='carrito-vacio'>El carrito está vacío</h3>}
+             {productosLista.length <= 0 && <h3 className='carrito-vacio'>El carrito está vacío</h3>}
           </div>   
         </div>
       )}

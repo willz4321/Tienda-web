@@ -1,3 +1,19 @@
+::-webkit-scrollbar {
+  background-color: #605f60;
+  width: 9px; /* ancho de la barra de desplazamiento */
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #718f8f;
+  transition: background-color 0.2s ease;
+}
+
+/* Para personalizar el "thumb" de la barra de desplazamiento (el indicador de posición) */
+::-webkit-scrollbar-thumb {
+  background: #7a787c; /* color del "thumb" */
+  border-radius: 5px; /* bordes redondeados */
+}
+
+
 /* Modal */
 .ReactModalPortal > div{
     opacity: 0;
@@ -210,13 +226,26 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  fill: #ffffff; /* Color rojo */
+  fill: #e2dede; /* Color rojo */
   width: 16px; /* Ancho del ícono */
   height: 16px; /* Altura del ícono */
   transition: all 0.3s ease; /* Agregamos una transición suave para hacerlo más agradable */
 }
 
 .eliminar-btn:hover {
+  fill: #ca0707; /* Color rojo al pasar el mouse */
+  transform: scale(1.5); /* Aumentar el tamaño al pasar el mouse */
+}
+.eliminar-btn-list {
+  cursor: pointer;
+  display: flex;;
+  fill: #111010; /* Color rojo */
+  width: 16px; /* Ancho del ícono */
+  height: 16px; /* Altura del ícono */
+  transition: all 0.3s ease; /* Agregamos una transición suave para hacerlo más agradable */
+}
+
+.eliminar-btn-list:hover {
   fill: #ca0707; /* Color rojo al pasar el mouse */
   transform: scale(1.5); /* Aumentar el tamaño al pasar el mouse */
 }
@@ -229,12 +258,10 @@
   margin: 0; 
 }
 .lista-carrito-derecha{
-  display: flex; 
-  flex-direction: row;
-  justify-content: center;
-   align-items: flex-end; 
-   gap: 10px;
-   position: absolute; 
-   bottom: 20px; 
-   right: 20px; 
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  bottom: 20px;
+  right: 20px;
+  
 }

@@ -1,11 +1,12 @@
 import { useDispatch } from "react-redux";
-import { listaProductos } from "../../assets/listaProductos";
 import { setDetailsProduct } from "../../store/slices/Tienda/TiendaSlice";
 import { Link } from "react-router-dom";
+import { useProducto } from "../components/thunks";
 
 
 export const Accesorios = () => {
   const dispatch = useDispatch();
+  const listaProductos = useProducto();
 
   const handleVerDetalle = (id) => {
     const productoSeleccionado = listaProductos.find((producto) => producto.id === id);

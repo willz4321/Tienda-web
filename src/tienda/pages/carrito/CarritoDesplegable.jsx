@@ -3,16 +3,21 @@ import { formatPriceWithCommas } from '../../components/thunks';
 import { removeItemFromBuys } from "../../../store/slices/Tienda/TiendaSlice";
 
 export const CarritoDesplegable = () => {
-  const productosSeleccionados = useSelector((state) => state.Tienda.listaProductos);
+  const productosSeleccionados = useSelector((state) => state.Tienda.clienteCompra.listaProductos);
   const dispatch = useDispatch();
 
   const handleRemoveItem = (productId, talle) => {
     dispatch(removeItemFromBuys({ id: productId, talle }));
   };
+  const totalCompra = productosSeleccionados.reduce(
+    (total, producto) => total + producto.precio * producto.cantidad,
+    0
+  );
+  
 
   return (
-    <div>
-      <div className="list-group" >
+    <div style={{height: '80vh'}}>
+      <div className="list-group overflow-auto h-100" >
         {productosSeleccionados.map((producto) => (
           <div key={`${producto.id}-${producto.talle}`} className="list-group-item" style={{backgroundColor: '#323232'}}>
             <svg xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +50,16 @@ export const CarritoDesplegable = () => {
           </div>
         ))}
       </div>
-      
+      {productosSeleccionados.length > 0 &&  <div className='align-items-end  text-light' >
+           <div className="row p-2 ">
+                <div className="col col-md-6 ">
+                  <h5>Total:</h5>
+                </div>
+                <div className="col col-md-4">
+                  <p>${formatPriceWithCommas(totalCompra)}</p>
+                </div>
+             </div>
+      </div>}
     </div>
   );
 };

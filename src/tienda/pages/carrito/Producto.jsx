@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { setItemBuys } from '../../../store/slices/Tienda/TiendaSlice';
+import { startLoading, setItemBuys } from '../../../store/slices/Tienda/TiendaSlice';
 import { CarritoDesplegable } from './CarritoDesplegable';
 
 export const Producto = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const productos = useSelector((state) => state.Tienda.productos);
+  const productosLista = useSelector((state) => state.Tienda.clienteCompra.listaProductos);
   const [cantidad, setCantidad] = useState(1);
   const [talle, setTalle] = useState('');
   const [showCarrito, setShowCarrito] = useState(false);
@@ -20,12 +21,19 @@ export const Producto = () => {
     }
   };
   
-  // Buscar el producto con el ID correspondiente en el estado de Redux
-  const productoSeleccionado = productos.find((producto) => producto.id === parseInt(id));
-
   const handleCarritoToggle = () => {
     setShowCarrito((prevState) => !prevState);
   };
+  // Buscar el producto con el ID correspondiente en el estado de Redux
+  const productoSeleccionado = productos.find((producto) => producto.id === parseInt(id));
+
+  useEffect(() => {
+    // Verificar si el producto seleccionado está disponible antes de continuar
+    if (productos.length == 0) {
+      startLoading();
+    }
+  }, [productos]);
+
 
   const handleAgregarAlCarrito = () => {
     const productoParaCarrito = { 
@@ -60,7 +68,7 @@ export const Producto = () => {
           </ul>
           <h4>Talle: {talle}</h4>
           <ul>
-              {productoSeleccionado.talle.map((talleP, index) => (
+              {productoSeleccionado.talles.map((talleP, index) => (
                 <div key={index} className="btn-group" role="group" aria-label="Basic radio toggle button group" style={{ marginLeft: '15px' }}>
                   <input
                     type="radio"
@@ -123,21 +131,21 @@ export const Producto = () => {
         <div className={`carrito-container ${showCarrito ? "active" : ""}`} onClick={handleCarritoToggle}>
           <div className="carrito-overlay" >
             <CarritoDesplegable />
-            <div className="lista-carrito-derecha">
-            {productos.length > 0 && ( // Only render if there are products in the cart
+            <div className="lista-carrito-derecha pt-5">
+            {productosLista.length > 0 && ( // Only render if there are products in the cart
                 <>
-                  {/* Botón "Ver Carrito" */}
-                  <Link to="/listaCompra" className="btn btn-primary" onClick={handleCarritoToggle}>
+                 {/* Botón "Ver Carrito" */}
+                 <Link to="/listaCompra" className="btn btn btn-outline-light" onClick={handleCarritoToggle}>
                     Ver Carrito
                   </Link>
                   {/* Botón "Finalizar Compra" */}
-                  <Link to="/carrito" className="btn btn-success" onClick={handleCarritoToggle}>
+                  <Link to="/carrito" className="btn btn-outline-info" onClick={handleCarritoToggle}>
                     Finalizar Compra
                   </Link>
                 </>
               )}
              </div>
-             {productos.length <= 0 && <h3 className='carrito-vacio'>El carrito está vacío</h3>}
+             {productosLista.length <= 0 && <h3 className='carrito-vacio'>El carrito está vacío</h3>}
           </div>   
         </div>
       )}

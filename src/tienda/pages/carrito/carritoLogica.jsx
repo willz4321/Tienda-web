@@ -13,6 +13,7 @@ export const useFormLogic = () => {
     telefono: '',
     correoElectronico: '',
     regionProvincia: '',
+    localidad: '',
   });
 
   const handleChange = (e) => {
