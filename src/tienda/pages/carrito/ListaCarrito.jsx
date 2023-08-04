@@ -1,20 +1,35 @@
 import { useDispatch, useSelector } from "react-redux";
 import { formatPriceWithCommas } from '../../components/thunks';
 import { removeItemFromBuys } from "../../../store/slices/Tienda/TiendaSlice";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export const ListaCarrito = () => {
   const productosSeleccionados = useSelector((state) => state.Tienda.clienteCompra.listaProductos);
+  const [redirectToTienda, setRedirectToTienda] = useState(false);
   const dispatch = useDispatch();
 
   const handleRemoveItem = (productId, talle) => {
     dispatch(removeItemFromBuys({ id: productId, talle }));
-  };
+    };
 
   const totalCompra = productosSeleccionados.reduce(
     (total, producto) => total + producto.precio * producto.cantidad,
     0
-  );
+    );
+
+      // Verifica si el carrito está vacío
+   // Verifica si el carrito está vacío y actualiza el estado
+   useEffect(() => {
+    if (productosSeleccionados.length === 0) {
+      setRedirectToTienda(true);
+    }
+  }, [productosSeleccionados]);
+
+  // Redirige a la página /tienda si el carrito está vacío
+  if (redirectToTienda) {
+    return <Navigate to="/" />;
+  }
   return (
    
     <div >

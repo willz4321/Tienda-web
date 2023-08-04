@@ -2,60 +2,44 @@ import { useSelector } from "react-redux";
 import { formatPriceWithCommas } from "../../components/thunks";
 import { useFormLogic } from "./carritoLogica";
 import { provinciasArgentina } from "./provinciasDatos";
-import { useCompra } from "../../components/thunks";
-import { Link } from "react-router-dom";
+
+import { Link, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+
 
 export const CompraFinalizar = () => {
 
-    const { formData, handleChange, handleSubmit } = useFormLogic();
+    const { formData, handleChange, handleSubmit, redirectToDetails } = useFormLogic();
     const productosSeleccionados = useSelector((state) => state.Tienda.clienteCompra.listaProductos);  
-    const { agregarCompra } = useCompra();
-    
+    const [redirectToTienda, setRedirectToTienda] = useState(false);
+
     const totalCompra = productosSeleccionados.reduce(
       (total, producto) => total + producto.precio * producto.cantidad,
       0
     );
-     const handleEnviarClick = () => {
-    handleFormSubmit(event);
-  };
-    const handleFormSubmit = (event) => {
-      event.preventDefault();
-      // Aquí puedes realizar las validaciones que necesites antes de enviar los datos
-      
-      const direcciones = {
-        calle: formData.direccion,
-        hogar: formData.tipoHogar,
-        cp: formData.codigoPostal,
-        provincia: formData.regionProvincia,
-        localidad: formData.localidad,
-      };
-
-      const productosParaEnviar = productosSeleccionados.map((producto) => ({
-        nombre: producto.nombre,
-        talle: producto.talle,
-        precio: producto.precio,
-        cantidad: producto.cantidad,
-      }));
-      // Llama a la función agregarCompra con los datos del formulario
-      agregarCompra({
-        nombre: formData.nombre,
-        apellido: formData.apellido,
-        telefono: formData.telefono,
-        email: formData.correoElectronico,
-        total: totalCompra,
-        direcciones: [direcciones],
-       productoCompra: productosParaEnviar,
-      });
-     
-    };
+    useEffect(() => {
+      if (productosSeleccionados.length === 0) {
+        setRedirectToTienda(true);
+      }
+    }, [productosSeleccionados]);
+  
+    // Redirige a la página /tienda si el carrito está vacío
+    if (redirectToTienda) {
+      return <Navigate to="/" />;
    
+    }
+    if (redirectToDetails) {
+      return <Navigate to="/details" />;
+    }
+  
   return (
     <div className="container-fluid vh-100">
      <h1 className="pt-4">Detalles de facturacion</h1>
       <div className="row">
             
       <div className="col-md-7 pt-4">
-      <form onSubmit={ (event) => { handleSubmit(event); handleFormSubmit(event);}} >
+      <form  onSubmit={handleSubmit}>
 
         <div className="row mb-3">
       <div className="col">
@@ -117,6 +101,19 @@ export const CompraFinalizar = () => {
           <label htmlFor="comentarios" className="form-label">Comentarios o Detalles de Compra</label>
           <textarea className="form-control" id="comentarios" name="comentarios" value={formData.comentarios} onChange={handleChange}></textarea>
         </div>
+        <div className="row justify-content-between p-3">
+                
+                <button  type="submit" className="col-8 btn btn-dark rounded-0 " >Procesar pedido</button>
+               
+              
+                  <button type="button"  className="col-3 btn btn-secondary rounded-0 p-0 ">
+                    <Link to="/tienda" className="btn-link d-block w-100"
+                      style={{textDecoration: 'none',
+                              color: 'white'}}>
+                        Volver
+                    </Link>
+          </button>  
+             </div>
        </form>
       </div>
 
@@ -153,16 +150,7 @@ export const CompraFinalizar = () => {
                   <p>${formatPriceWithCommas(totalCompra)}</p>
                 </div>
               </div>
-              <div className="row justify-content-between p-3">
-                  <button  type="button" className="col-9 btn btn-primary" onClick={handleEnviarClick}>Enviar</button>
-                  <button type="submit"  className="col-3 btn btn-success">
-                    <Link to="/tienda"
-                      style={{textDecoration: 'none',
-                              color: 'white'}}>
-                        Volver
-                    </Link>
-          </button>  
-             </div>
+              
           </div>
         </div>
       </div>

@@ -1,7 +1,18 @@
+import { useDispatch } from "react-redux";
+import { formatPriceWithCommas, useProducto } from "../components/thunks";
+import { setDetailsProduct } from "../../store/slices/Tienda/TiendaSlice";
+import { Link } from "react-router-dom";
 
 
 
 export const TiendaPage = () => {
+
+   const dispatch = useDispatch();
+   const listaProductos = useProducto();
+   const handleVerDetalle = (id) => {
+      const productoSeleccionado = listaProductos.find((producto) => producto.id === id);
+      dispatch(setDetailsProduct(productoSeleccionado));
+    };
   return (
 
     <>
@@ -13,62 +24,46 @@ export const TiendaPage = () => {
    </div>
 
     <div style={{backgroundColor: "black"}}>
-        <div className="container text-white" >
-      <div className="row">
-        <div className="col">
-        <h4>HECHO EN ARGENTINA</h4>
+        <div className="container text-white  p-5 mt-5 mb-5" >
+      <div className="row d-flex justify-content-around align-items-center">
+        <div className="col-2">
+        <h4 style={{textAlign: 'center'}}>HECHO EN ARGENTINA</h4>
         </div>
-        <div className="col">
-       <h4>COMPRÁ EN HASTA 6 CUOTAS SIN INTERÉS</h4> 
+        <div className="col-3">
+       <h4 style={{textAlign: 'center'}}>COMPRÁ EN HASTA 6 CUOTAS SIN INTERÉS</h4> 
         </div>
-        <div className="col">
-        <h4>ENVÍOS A TODO EL PAÍS</h4>
+        <div className="col-2">
+        <h4 style={{textAlign: 'center'}}>ENVÍOS A TODO EL PAÍS</h4>
         </div>
       </div>
      </div>
     </div>
-    
-    <div className="container closs">
-        <div className="row">
 
-            <div>
-                <div>
-                   <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-store"/>
+    <div className="closs mb-5 pe-2">
+      <ul className="row product-list">
+          {listaProductos
+            .filter((producto) => producto.tipo === 'saleFor')
+            .map((producto) => (
+              <li className="product-item text-relative mt-2" key={producto.id}>
+                <div className="col d-flex flex-column align-items-center">
+                    <img
+                      src={producto.imagen}
+                      alt={producto.nombre}
+                      className="img-new"   
+                    />
+                  <div className="text-link">
+                    <h2 className="text-center">{producto.nombre}</h2>
+                    <Link to={`/producto/${producto.id}`}>
+                    <button type="button" className="btn btn-light img-store-s" onClick={() => handleVerDetalle(producto.id)}>COMPRAR</button>
+                    </Link>
+                    
+                  </div>
                 </div>
-                <div className="text-link">
-                   <h2 className="text-h2">
-                   PANTALÓN ZELIK PARDO
-                   </h2>
-                   <a href="">COMPRAR</a>
-                </div>
-            </div>
+              </li>
+            ))}
+        </ul>
+      </div>
 
-            <div>
-            <div>
-                   <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-store"/>
-                </div>
-                <div className="text-link">
-                   <h2>
-                   PANTALÓN ZELIK PARDO
-                   </h2>
-                   <a href="">COMPRAR</a>
-                </div>
-            </div>
-
-            <div>
-            <div>
-                   <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-store"/>
-                </div>
-                <div className="text-link">
-                   <h2>
-                   PANTALÓN ZELIK PARDO
-                   </h2>
-                   <a href="">COMPRAR</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
     <div>
       <div>
          <img src="../src/assets/tienda-img2.png" alt="font2" style={{width: "99vw"}} />
@@ -82,79 +77,59 @@ export const TiendaPage = () => {
          </h3>
       </div>
 
-      <div className="container">
-      <div className="row">
-        <div className="col">
-          <img src="../src/assets/pantalonMarron.jpg" alt="presentacion1" className="img-new" />
-          <div>
-            <h4>
-               producto A
-            </h4>
-            <h5>
-               precio
-            </h5>
+      <div>
+  <div className="container me-0 ms-0">
+    <div className="row vw-100">
+      {listaProductos
+        .filter((producto) => producto.tipo === 'new')
+        .map((producto) => (
+          <div className="col col-3 mb-5" key={producto.id}>
+            <div className="d-flex flex-column align-items-start">
+              <Link to={`/producto/${producto.id}`}>
+                <img
+                  src={producto.imagen}
+                  alt={producto.nombre}
+                  className="img-new"
+                  onClick={() => handleVerDetalle(producto.id)}
+                />
+              </Link>
+              <div className="mt-2">
+                <h5 className="text-start">{producto.nombre}</h5>
+                <h6 className="text-start text-secondary">${formatPriceWithCommas(producto.precio)}</h6>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="col">
-          <img src="../src/assets/pantalonMarron.jpg" alt="presentacion2" className="img-new" />
-          <div>
-            <h4>
-               producto A
-            </h4>
-            <h5>
-               precio
-            </h5>
-          </div>
-        </div>
-        <div className="col">
-          <img src="../src/assets/pantalonMarron.jpg" alt="presentacion2" className="img-new" />
-          <div>
-            <h4>
-               producto A
-            </h4>
-            <h5>
-               precio
-            </h5>
-          </div>
-        </div>
-        <div className="col">
-          <img src="../src/assets/pantalonMarron.jpg" alt="presentacion2" className="img-new" />
-          <div>
-            <h4>
-               producto A
-            </h4>
-            <h5>
-               precio
-            </h5>
-          </div>
-        </div>
-      </div>
+        ))}
     </div>
+  </div>
+</div>
+
+
     </div>
 
     <div style={{backgroundColor: "black"}}>
-        <div className="container text-white" >
-      <div className="row">
+        <div className="container text-white p-5 mt-5 mb-5" >
+      <div className="row d-flex justify-content-around align-items-center">
         <div className="col">
         <div>
          <h4>TIENDA</h4>
          </div>
          <div>
-            <h4>HORARIOS DE ATENCIÓN LUNES A VIERNES: 11 A 19 HS SÁBADOS: 13 A 19 HS</h4>
+            <h4 style={{textAlign: 'center'}}>HORARIOS DE ATENCIÓN LUNES A VIERNES: 11 A 19 HS SÁBADOS: 13 A 19 HS</h4>
          </div>
         </div>
 
         <div className="col">
          <div>
-            <h4>DESPACHOS</h4> 
+            <h4 style={{textAlign: 'center'}}>DESPACHOS</h4> 
          </div>
          <div>
-            <h4>
+            <h4 style={{textAlign: 'center'}}>
             LOS PEDIDOS SE DESPACHAN DE LUNES A VIERNES 
             </h4> 
          </div>
             <div>
-            <h4>
+            <h4 style={{textAlign: 'center'}}>
             CABA Y GBA: ENTREGA EN 24HS
             </h4> 
             </div>

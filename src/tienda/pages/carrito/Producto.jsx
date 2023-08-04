@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { startLoading, setItemBuys } from '../../../store/slices/Tienda/TiendaSlice';
 import { CarritoDesplegable } from './CarritoDesplegable';
+import { formatPriceWithCommas } from '../../components/thunks';
 
 export const Producto = () => {
   const dispatch = useDispatch();
@@ -52,39 +53,44 @@ export const Producto = () => {
 
   return (
     <>
-    <div className="container">
-      <div className="row">
-        <div className="col-md-6">
-          <img src={productoSeleccionado.imagen} alt={productoSeleccionado.nombre} className="img-fluid" />
+    <div className="container vw-100 ms-0 ps-0 me-0 pe-0">
+      <div className="row vw-100">
+        <div className="col-md-7 img-prod">
+          <img src={productoSeleccionado.imagen} alt={productoSeleccionado.nombre} className="img-fluid w-100 h-100" />
         </div>
-        <div className="col-md-6">
-          <h2>{productoSeleccionado.nombre}</h2>
-          <p>Precio: ${productoSeleccionado.precio}</p>
-          <h4>Descripción:</h4>
-          <ul>
+        <div className="col-md-4 d-flex flex-column ms-5 mt-5 position-sticky" style={{margin: '0px', height: "100vh", position: "relative", top: '40px'}}>
+          <h1>{productoSeleccionado.nombre}</h1>
+          <h4 className='text-secondary'>${formatPriceWithCommas(productoSeleccionado.precio)}</h4>
+          <ul className='mt-4'>
             {productoSeleccionado.descripcion.map((item, index) => (
-              <li key={index}>{item}</li>
+              <li className='text-secondary mt-1' key={index}>{item}</li>
             ))}
           </ul>
-          <h4>Talle: {talle}</h4>
-          <ul>
+
+          <div className='text-secondary mt-2'>
+            <h4 className="d-inline">Talle: </h4>
+            <h5 className="d-inline">{talle}</h5>
+          </div>
+
+          <ul className='ps-0'>
               {productoSeleccionado.talles.map((talleP, index) => (
-                <div key={index} className="btn-group" role="group" aria-label="Basic radio toggle button group" style={{ marginLeft: '15px' }}>
+                <div key={index} className="btn-group mt-4 " role="group" aria-label="Basic radio toggle button group" style={{ marginLeft: '15px' }}>
                   <input
                     type="radio"
                     className="btn-check"
-                    name="btnradio"
-                    id={`btnradio${index + 1}`}
+                    name="options-base"
+                    id={`option${index + 4}`}
                     autoComplete="off"
                     checked={talle === talleP}
                     onChange={() => setTalle(talleP)}
                   />
-                  <label className={`btn btn-outline-primary ${talle === talleP ? 'active' : ''}`} htmlFor={`btnradio${index + 1}`}>
+                  <label className={`btn ${talle === talleP ? ' selected-talle' : 'btn-outline-secondary'}`} htmlFor={`option${index + 4}`}>
                     {talleP}
                   </label>
                 </div>
               ))}
-            </ul>
+          </ul>
+
 
 
           <div className="d-flex align-items-center">
@@ -118,8 +124,8 @@ export const Producto = () => {
               </span>
             </div>
 
-            <div className='p-4'>
-            <button className="btn btn-success" onClick={handleAgregarAlCarrito} disabled={!talle}>Añadir al carrito</button>
+            <div className='p-4 vw-100'>
+            <button type="button" className="btn btn-dark w-100" style={{height: '50px'}} onClick={handleAgregarAlCarrito} disabled={!talle}>Añadir al carrito</button>
             </div>
             
           </div>

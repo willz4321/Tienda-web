@@ -7,7 +7,8 @@ import {
   Footer,
   CompraFinalizar,
   ListaCarrito,
-  Producto
+  Producto,
+  DetallesCompra
 } from "../pages";
 import PropTypes from 'prop-types';
 
@@ -33,6 +34,7 @@ export const TiendaRoutes = () => {
 
         {/* Ruta sin Navbar */}
         <Route path="carrito" element={<CompraFinalizar />} />
+        <Route path="details" element={<DetallesCompra />} />
 
         {/* Rutas de productos con Navbar */}
         <Route path="producto/:id" element={<WithNavbar><Producto /></WithNavbar>} />

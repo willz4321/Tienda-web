@@ -16,7 +16,8 @@ export const TiendaSlice = createSlice({
           hogar: '',
           cp: '',
           provincia: '',
-          localidad: ''
+          localidad: '',
+          comentarios: ''
         }
       }
     },
@@ -36,6 +37,7 @@ export const TiendaSlice = createSlice({
       state.clienteCompra.datosCompra.direccion.cp = payload.codigoPostal;
       state.clienteCompra.datosCompra.direccion.provincia = payload.regionProvincia;
       state.clienteCompra.datosCompra.direccion.localidad = payload.localidad;
+      state.clienteCompra.datosCompra.direccion.comentarios = payload.comentarios;
 
       // Asignar los demás datos del cliente
       state.clienteCompra.datosCompra.nombre = payload.nombre;
@@ -65,6 +67,19 @@ export const TiendaSlice = createSlice({
         (producto) => producto.id !== id || producto.talle !== talle
       );
     },
+    resetClienteCompra: (state) => {
+      state.clienteCompra.listaProductos = [];
+      state.clienteCompra.datosCompra = {
+        direccion: {
+          calle: '',
+          hogar: '',
+          cp: '',
+          provincia: '',
+          localidad: '',
+          comentarios: ''
+        }
+      };
+    }
   },
 });
 
@@ -74,5 +89,6 @@ export const {
   setItemBuys,
   removeItemFromBuys,
   startLoading, 
-  tipoProductoSelect
+  tipoProductoSelect,
+  resetClienteCompra
 } = TiendaSlice.actions;
